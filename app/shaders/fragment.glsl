@@ -12,7 +12,7 @@ const float SCROLL_WATER_LINE_SPEED = 0.002;
 const float WAVE_MAGNITUDE = .01; // 1 = whole screen
 const float WAVE_FREQ = 20.;
 const float WAVE_SPEED = .075;
-const float WAVE_TOP_HEIGHT = .0025;
+const float WAVE_LINING_HEIGHT = .004;
 const float MEGAWAVE_MAGNITUDE = .01;
 const float MEGAWAVE_FREQ = 5.;
 const float MEGAWAVE_SPEED = .2;
@@ -20,7 +20,7 @@ const float MEGAWAVE_SPEED = .2;
 const vec3 SHALLOW_WATER_COLOR = vec3(0.13, 0.43, 0.6);
 const vec3 DEEP_WATER_COLOR = vec3(0.03, 0.13, 0.18);
 const vec3 BACKGROUND_WATER_COLOR = vec3(0.7, 0.83, 0.88);
-const vec3 WAVE_LINING_COLOR = vec3(0.31, 0.47, 0.55);
+const vec3 WAVE_LINING_COLOR = vec3(0.59, 0.76, 0.85);
 
 const vec3 SKY_COLOR = vec3(0.69, 0.84, 0.95);
 
@@ -28,7 +28,8 @@ float getAdjustedWaterLine() {
     return (WATER_LINE + scrollY * SCROLL_WATER_LINE_SPEED);
 }
 
-vec3 getDepthColor(vec2 uv) {
+vec3 getDepthColor() {
+    vec2 uv = vUv;
     float adjusted_water_line = getAdjustedWaterLine();
     vec3 color;
     if (uv.y > adjusted_water_line) {
@@ -41,22 +42,27 @@ vec3 getDepthColor(vec2 uv) {
     return color;
 }
 
+float getWaveHeight() {
+    vec2 uv = vUv;
+    float wave_height = getAdjustedWaterLine();
+    wave_height += sin((uTime * WAVE_SPEED + uv.x) * WAVE_FREQ) * WAVE_MAGNITUDE; // adjust for wave
+    wave_height += cos((uTime * MEGAWAVE_SPEED + uv.x) * MEGAWAVE_FREQ) * MEGAWAVE_MAGNITUDE; // adjust for megawaves
+    return wave_height;
+}
+
 void main(void)
 {
-
     // Rename the uniform
     vec2 uv=vUv;
 
     // Adjust water line
-    vec3 color = getDepthColor(uv);
+    vec3 color = getDepthColor();
     int opacity = 1;
 
     float adjusted_water_line = getAdjustedWaterLine();
-    float wave_height = adjusted_water_line;
-    wave_height += sin((uTime * WAVE_SPEED + uv.x) * WAVE_FREQ) * WAVE_MAGNITUDE; // adjust for wave
-    wave_height += cos((uTime * MEGAWAVE_SPEED + uv.x) * MEGAWAVE_FREQ) * MEGAWAVE_MAGNITUDE; // adjust for megawaves
+    float wave_height = getWaveHeight();
     if (uv.y > wave_height) {
-        if (uv.y < wave_height + WAVE_TOP_HEIGHT) {
+        if (uv.y < wave_height + WAVE_LINING_HEIGHT) {
             // Wave Lining Color
             color = WAVE_LINING_COLOR;
         } else if (uv.y > adjusted_water_line) {
