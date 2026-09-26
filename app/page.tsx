@@ -110,8 +110,18 @@ export default function Home() {
       </div>
 
       {/* Floating Pages */}
-      <FloatingPageList scrollRef={scrollRef} items={[
-          <div className='w-full h-full bg-gray-50 text-center'>Hello</div>
+      <FloatingPageList start={300} verticalSize={700} gap={150} scrollRef={scrollRef} items={[
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page1</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page2</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page3</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page4</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page5</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page6</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page7</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page8</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page9</div>,
+          <div className='w-full h-full bg-gray-50 text-center text-black'>Page10</div>
+
       ]} />
 
       {/* Header */}

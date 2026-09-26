@@ -9,7 +9,7 @@ type FloatingPageListProps = {
     items: React.ReactNode[];
   };
 
-const FloatingPageList = ({ start=10, verticalSize=1000, gap=10, scrollRef, items }: FloatingPageListProps) => {
+const FloatingPageList = ({ start=100, verticalSize=1000, gap=100, scrollRef, items }: FloatingPageListProps) => {
 
     return (
         <>

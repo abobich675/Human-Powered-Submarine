@@ -1,4 +1,5 @@
 import { MutableRefObject, useEffect, useState } from "react";
+import './animations.css';
 
 type FloatingPageProps = {
     startY: number;
@@ -10,22 +11,22 @@ type FloatingPageProps = {
 const FloatingPage = ({ startY, endY, scrollRef, children }: FloatingPageProps) => {
     const [hidden, setHidden] = useState(true);
 
-    function checkHidden() {
-        if (startY < scrollRef.current && scrollRef.current < endY)
-            setHidden(false)
-        else
-            setHidden(true)
-    }
-
     useEffect(() => {
-        setInterval(checkHidden, 100);
-    }, [])
+        function checkHidden() {
+            const isInRange = startY < scrollRef.current && scrollRef.current < endY;
+            setHidden(!isInRange);
+        }
 
+        checkHidden();
+        const id = setInterval(checkHidden, 10);
+        return () => clearInterval(id); // cleanup on unmount / dep change
+    }, [startY, endY, scrollRef])
+    
     return (
         <>
         { !hidden &&
             <div className="flex justify-center items-stretch w-full h-full">
-                <div className="w-full m-[5%]">
+                <div id={`floating_page_${startY}`} className="relative w-full m-[5%] fade-in-right">
                     {children}
                 </div>
             </div>
