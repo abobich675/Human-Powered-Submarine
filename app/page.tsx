@@ -67,8 +67,9 @@ function Shader({scrollRef, ...meshProps}: {scrollRef: MutableRefObject<number>}
 }
 
 export default function Home() {
-  const { filterEnabled } : any = useTweaks({
-    filterEnabled: true,
+  const { filterEnabled, wavesEnabled } : any = useTweaks({
+    filterEnabled: false,
+    wavesEnabled: false
   });
 
   const scrollRef = useRef(0);
@@ -78,7 +79,9 @@ export default function Home() {
       scrollRef.current = window.scrollY;
       console.log("scrollY", scrollY);
     };
-    //add eventlistener to window
+    // run once on load
+    onScroll();
+    // add eventlistener to window
     window.addEventListener("scroll", onScroll, { passive: true });
     // remove event on unmount to prevent a memory leak with the cleanup
     return () => {
@@ -89,24 +92,26 @@ export default function Home() {
   return (
     <main className="h-screen">
       {/* Filter Canvas */}
-      {/* { filterEnabled &&
-        <div className='fixed h-screen w-screen z-10 pointer-events-none'>
+      { filterEnabled &&
+        <div className='fixed h-screen w-screen z-15 pointer-events-none'>
           <Canvas orthographic style={{ pointerEvents: 'none' }}>
             <ambientLight intensity={Math.PI / 2} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
             <ShaderFilter props={{ position: [0, 0, 0] }} />
           </Canvas>
         </div>
-      } */}
+      }
 
       {/* Background Canvas */}
-      {/* <div className='fixed h-screen w-screen z-10'>
-        <Canvas orthographic>
-          <ambientLight intensity={Math.PI / 2} />
-          <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-          <Shader position={[0, 0, 0]} scrollRef={scrollRef} />
-        </Canvas>
-      </div> */}
+      { wavesEnabled &&
+        <div className='fixed h-screen w-screen z-10 pointer-events-none'>
+          <Canvas orthographic style={{ pointerEvents: 'none' }}>
+            <ambientLight intensity={Math.PI / 2} />
+            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <Shader position={[0, 0, 0]} scrollRef={scrollRef} />
+          </Canvas>
+        </div>
+      }
 
       {/* Floating Pages */}
       {/* <FloatingPageList start={300} verticalSize={700} gap={150} scrollRef={scrollRef} items={[
@@ -133,7 +138,7 @@ export default function Home() {
 
       {/* Header */}
       <div className='w-full h-[300px] bg-[#9badb7]'>
-        <div className='w-full text-center pt-2 text-gray-500'>
+        <div className='w-full text-center pt-20 text-gray-500'>
           <div className='text-9xl '>HPS</div>
           <div className='text-5xl '>Human Powered Submarine</div>
         </div>
@@ -143,20 +148,39 @@ export default function Home() {
       <div className='flex h-[100px]'>
         <div className='flex-none bg-[url(/top_tile.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] w-[125px] scale-x-[-1]' />
         <div className='flex-1 bg-[url(/top_transition.png)] [background-size:100%_100px] [image-rendering:pixelated] w-[100px]' />
-        <div className='flex-none min-w-0 bg-[url(/top_tile_main.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),150px)]' >
-        </div>
-
+        <div className='flex-none min-w-0 bg-[url(/top_tile_main.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] [width:calc(round(down,calc(100%_-_300px),100px)_+_50px)]' />
         <div className='flex-1 bg-[url(/top_transition.png)] [background-size:100%_100px] [image-rendering:pixelated] w-[100px] scale-x-[-1]' />
         <div className='flex-none bg-[url(/top_tile.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] w-[125px]' />
       </div>
 
       {/* Pool Main */}
-      <div className='flex h-full'>
+      <div className='flex h-[10000px]'>
         <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full scale-x-[-1]' />
         <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full' />
-        <div className='flex-none min-w-0 bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),150px)] h-full' >
-        </div>
+        <div className='flex-none min-w-0 bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] [width:calc(round(down,calc(100%_-_300px),100px)_+_50px)] h-full' >
+          {/* Indent */}
+          <div className='w-[800px] h-[500px] bg-black ml-[100px]'>
+            {/* Indent Top */}
+            <div className='flex w-full h-[100px] '>
+              <div className='flex-none bg-[url(/indent_tl.png)] bg-no-repeat bg-[length:100px] [image-rendering:pixelated] w-[100px] h-full' />
+              <div className='flex-none min-w-0 bg-[url(/indent_t.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_200px),150px)] h-full' />
+              <div className='flex-none min-w-[100px] bg-[url(/indent_tr.png)] bg-no-repeat bg-[length:100px] [image-rendering:pixelated] h-full' ></div>
+            </div>
+            {/* Indent Main */}
+            <div className='flex w-full h-[round(down,calc(100%_-_200px),150px)]'>
+              <div className='flex-none bg-[url(/indent_l.png)] bg-repeat-y bg-[length:100px] [image-rendering:pixelated] w-[100px] h-[full]' />
+              <div className='flex-none min-w-0 [width:round(down,calc(100%_-_200px),150px)] h-full' />
+              <div className='flex-none bg-[url(/indent_r.png)] bg-repeat-y bg-[length:100px] [image-rendering:pixelated] w-[100px] h-full' ></div>
+            </div>
+            {/* Indent Bottom */}
+            <div className='flex w-full h-[100px] '>
+              <div className='flex-none bg-[url(/indent_bl.png)] bg-no-repeat bg-[length:100px] [image-rendering:pixelated] w-[100px] h-full' />
+              <div className='flex-none min-w-0 bg-[url(/indent_b.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_200px),150px)] h-full' />
+              <div className='flex-none min-w-[100px] bg-[url(/indent_br.png)] bg-no-repeat bg-[length:100px] [image-rendering:pixelated] h-full' ></div>
+            </div>
+          </div>
 
+        </div>
         <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full scale-x-[-1]' />
         <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full' />
       </div>
