@@ -100,7 +100,7 @@ export default function Home() {
       } */}
 
       {/* Background Canvas */}
-      {/* <div className='fixed h-screen w-screen -z-10'>
+      {/* <div className='fixed h-screen w-screen z-10'>
         <Canvas orthographic>
           <ambientLight intensity={Math.PI / 2} />
           <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
@@ -130,15 +130,38 @@ export default function Home() {
           <div className='text-5xl '>Human Powered Submarine</div>
         </div>
       </div> */}
+
+      {/* Header */}
+      <div className='w-full h-[300px] bg-[#9badb7]'>
+        <div className='w-full text-center pt-2 text-gray-500'>
+          <div className='text-9xl '>HPS</div>
+          <div className='text-5xl '>Human Powered Submarine</div>
+        </div>
+      </div>
+
+      {/* Pool Top */}
+      <div className='flex h-[100px]'>
+        <div className='flex-none bg-[url(/top_tile.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] w-[125px] scale-x-[-1]' />
+        <div className='flex-1 bg-[url(/top_transition.png)] [background-size:100%_100px] [image-rendering:pixelated] w-[100px]' />
+        <div className='flex-none min-w-0 bg-[url(/top_tile_main.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),150px)]' >
+        </div>
+
+        <div className='flex-1 bg-[url(/top_transition.png)] [background-size:100%_100px] [image-rendering:pixelated] w-[100px] scale-x-[-1]' />
+        <div className='flex-none bg-[url(/top_tile.png)] bg-repeat-x bg-[length:100px] [image-rendering:pixelated] w-[125px]' />
+      </div>
+
+      {/* Pool Main */}
       <div className='flex h-full'>
         <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full scale-x-[-1]' />
         <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full' />
-        <div className='flex-none min-w-0 bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),100px)] h-full' >
+        <div className='flex-none min-w-0 bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),150px)] h-full' >
         </div>
 
         <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full scale-x-[-1]' />
         <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full' />
       </div>
+
+      {/* Pool Bottom */}
     </main>
   );
 }
