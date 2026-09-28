@@ -9,29 +9,35 @@ type FloatingPageProps = {
   };
 
 const FloatingPage = ({ startY, endY, scrollRef, children }: FloatingPageProps) => {
-    const [hidden, setHidden] = useState(true);
+    const [visible, setVisible] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         function checkHidden() {
-            const isInRange = startY < scrollRef.current && scrollRef.current < endY;
-            setHidden(!isInRange);
+            const inRange = startY < scrollRef.current && scrollRef.current < endY;
+
+            setVisible(inRange);
+            if (inRange)
+                setMounted(true)
+            else if (visible)
+                setTimeout(() => setMounted(false), 2000);
         }
 
         checkHidden();
         const id = setInterval(checkHidden, 10);
         return () => clearInterval(id); // cleanup on unmount / dep change
-    }, [startY, endY, scrollRef])
-    
+    }, [startY, endY, scrollRef, visible])
+
+    if (!mounted)
+        return null;
+
     return (
-        <>
-        { !hidden &&
-            <div className="flex justify-center items-stretch w-full h-full">
-                <div id={`floating_page_${startY}`} className="relative w-full m-[5%] fade-in-right">
-                    {children}
-                </div>
+        <div className="flex justify-center items-stretch w-full h-full">
+            <div id={`floating_page_${startY}`}
+                className={`relative w-full m-[5%] ${visible ? 'fade-in-right' : 'fade-out-right'}`}>
+                {children}
             </div>
-        }
-        </>
+        </div>
     )
 }
 

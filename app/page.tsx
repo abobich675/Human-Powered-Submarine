@@ -8,7 +8,6 @@ import vertexShader from './shaders/vertex.glsl';
 import * as THREE from 'three';
 import { useTweaks } from 'use-tweaks';
 import FloatingPageList from '@/components/FloatingPageList';
-import FloatingPage from '@/components/FloatingPage';
 
 function ShaderFilter(props: any) {
   const shaderRef = useRef<THREE.ShaderMaterial | null>(null);
@@ -90,7 +89,7 @@ export default function Home() {
   return (
     <main className="h-screen">
       {/* Filter Canvas */}
-      { filterEnabled &&
+      {/* { filterEnabled &&
         <div className='fixed h-screen w-screen z-10 pointer-events-none'>
           <Canvas orthographic style={{ pointerEvents: 'none' }}>
             <ambientLight intensity={Math.PI / 2} />
@@ -98,19 +97,19 @@ export default function Home() {
             <ShaderFilter props={{ position: [0, 0, 0] }} />
           </Canvas>
         </div>
-      }
+      } */}
 
       {/* Background Canvas */}
-      <div className='fixed h-screen w-screen -z-10'>
+      {/* <div className='fixed h-screen w-screen -z-10'>
         <Canvas orthographic>
           <ambientLight intensity={Math.PI / 2} />
           <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
           <Shader position={[0, 0, 0]} scrollRef={scrollRef} />
         </Canvas>
-      </div>
+      </div> */}
 
       {/* Floating Pages */}
-      <FloatingPageList start={300} verticalSize={700} gap={150} scrollRef={scrollRef} items={[
+      {/* <FloatingPageList start={300} verticalSize={700} gap={150} scrollRef={scrollRef} items={[
           <div className='w-full h-full bg-gray-50 text-center text-black'>Page1</div>,
           <div className='w-full h-full bg-gray-50 text-center text-black'>Page2</div>,
           <div className='w-full h-full bg-gray-50 text-center text-black'>Page3</div>,
@@ -122,14 +121,23 @@ export default function Home() {
           <div className='w-full h-full bg-gray-50 text-center text-black'>Page9</div>,
           <div className='w-full h-full bg-gray-50 text-center text-black'>Page10</div>
 
-      ]} />
+      ]} /> */}
 
       {/* Header */}
-      <div className='w-full h-[10000px] mx-auto pt-20 text-gray-500'>
+      {/* <div className='w-full h-[10000px] mx-auto pt-20 text-gray-500'>
         <div className='w-full text-center'>
           <div className='text-9xl '>HPS</div>
           <div className='text-5xl '>Human Powered Submarine</div>
         </div>
+      </div> */}
+      <div className='flex h-full'>
+        <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full scale-x-[-1]' />
+        <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full' />
+        <div className='flex-none min-w-0 bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] [width:round(down,calc(100%_-_250px),100px)] h-full' >
+        </div>
+
+        <div className='flex-1 bg-[url(/transition.png)] bg-repeat-y [background-size:100%_100px] [image-rendering:pixelated] w-[100px] h-full scale-x-[-1]' />
+        <div className='flex-none bg-[url(/tile.png)] bg-repeat bg-[length:100px] [image-rendering:pixelated] w-[125px] h-full' />
       </div>
     </main>
   );
